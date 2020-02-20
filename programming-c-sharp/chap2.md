@@ -169,5 +169,144 @@
   var point = (X: 10, Y: 5);
   Console.WriteLine($"X: {point.X, Y: {point.Y}");
   ``` 
+- C# will also infer member names is you initialize with variables 
+  ```C#
+  int x = 10, y =5;
+  var point = (x,y)
+  Console.WriteLine($"X: {point.x, Y: {point.y}");
+  ```
+- you also don't need to give a name they default to Item1 and Item2
+  ```C#
+  (int, int) point = (10, 5);
+  Console.WriteLine($"X: {point.Item1, Y: {point.Item2}");
+  ``` 
+- tuples can be assigned to any other tuple with the same structure 
+  ```C#
+  (int X, int Y) point = (46, 3); 
+  (int Width, int Height) dimensions = point; 
+  (int Age, int NumberOfChildren) person = point;
+  ```
+- tuples can be deconstructed into its parts if you so desire 
+  ```C#
+  (int X, int Y) point1 = (40, 6); 
+  (int X, int Y) point2 = (12, 34);  
+
+  (int x, int y) = point1; 
+  Console.WriteLine($"1: {x}, {y}"); 
+  (x, y) = point2; 
+  Console.WriteLine($"2: {x}, {y}");
+  ```
+
+### Dynamic 
+- dynamic - doesn't corresspond to a type 
+- disables statically typed behavior 
+- the compiler will generate code that attempts to make sense of it at runtime 
+- not really intended for widespread use 
+- implemented to work with MS Office Automation APIs which are not typed 
 
 
+### Object 
+- object - the base class of almost all C# types 
+- ultimate general purpose container, you can refer to almost anything with an object variable 
+  - bool, string, numeric types 
+
+## Operators 
+- standard operators including post and pre increment/decrement 
+- also supports bitwise operations 
+- boolean and relational operators are also standard && || != == >
+- accessing a member of null will cause a runtime error so you can write 
+  if (s?.Length > 10) instead of if (s != null && s.length > 10)
+    - the ? will handle the null case automatically 
+- C# 8 has also introduced a feature to indicate that certain values should nver be null 
+- supports ternary operator (x > y) ? x : y;
+- null coaelescing operator - shorthand ternary for nulls  
+  - instead of string neverNull = (s == null) ? "" : s; write this 
+    - string neverNull = s ?? "";
+- you can combine the null-conditional with the null coaelescing operator 
+  - int characterCount = s?.Length ?? 0;
+
+## Flow Control 
+- fairly straight forward 
+- switch case statements can be strings 
+- not required to provide a default section 
+- each case must break 
+  - you can by pass this with goto case *this is different than the goto you're thinking of and isn't a total hack* 
+  ```C#
+  switch (x) 
+  { 
+    case "One":     
+      Console.WriteLine("One");     
+      goto case "Two"; 
+    case "Two":     
+      Console.WriteLine("One or two");     
+      break; 
+  }
+  ```
+
+## Loops 
+- for, while, do while all supported
+- foreach also supported 
+  ```C#
+  foreach (string message in messges)
+  {
+    Console.WriteLine(message);
+  }
+  ```
+
+## Patterns 
+- patterns describe one or more criteria a value can be tested against 
+- tuple patterns 
+  ```C#
+  switch (p) 
+  { 
+    case (0, 0):     
+      Console.WriteLine("How original");     
+      break;  
+    case (0, 1): 
+    case (1, 0):     
+      Console.WriteLine("What an absolute unit");     
+      break;  
+    case (1, 1):     
+      Console.WriteLine("Be there and be square");     
+      break; 
+  }
+  ```
+
+- type patterns 
+ ```C# 
+  switch (o) 
+  { 
+    case string s:     
+      Console.WriteLine($"A piece of string is {s.Length} long");     
+      break;  
+    case int i:     
+      Console.WriteLine($"That's numberwang! {i}");     
+      break; 
+  }
+  ```
+- type patterns also introduce a variable that the code for the case can use 
+- positional patterns 
+  ```C#
+  case (int x, int y):
+    Console.WriteLine($"I know where it's at: {x}, {y}");
+    break;
+  ```
+- positional pattern with constant and type patterns 
+  ```C#
+  case (0, int y):
+    Console.WriteLine($"This is on the X axis, at height {y}");
+    break;
+  ```
+- you can also use var with positional patterns 
+- you can use _ to not evaluate unneeded members of a tuple like so 
+  ```C#
+  case (int x, _):
+    Console.WriteLine($"At X: {x}. As for Y, who knows?");
+    break;
+  ```
+- Property Pattern - will evaluate an objects property like so 
+  ```C#
+  case string { Length: 0 }:
+    Console.WriteLine("How long is a piece of string? Not very!");
+  ```
+- Property patterns can optionally

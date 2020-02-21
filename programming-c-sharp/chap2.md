@@ -309,4 +309,29 @@
   case string { Length: 0 }:
     Console.WriteLine("How long is a piece of string? Not very!");
   ```
-- Property patterns can optionally
+- Property patterns can optionally output to a variable 
+  ```C#
+  case string { Length: 0 } s:
+    Console.WriteLine($"How long is a piece of string? This long: {s.Length}");
+    break;
+
+  case string { Length: int length }:
+    Console.WriteLine($"How long is a piece of string? This long: {length}");
+    break;
+  ```
+- Patterns can also have a when clause 
+  ```C#
+  case (int w, int h) when w > h:
+    Console.WriteLine("Landscape");
+    break;
+  ```
+- There is also a switch expression that doesn't require case 
+  ```C#
+  return shape switch
+  {
+      (int w, int h) when w < h => "Portrait",
+      (int w, int h) when w > h => "Landscape",
+      (int _, int _) => "Square",
+      _ => "Unknown"
+  };
+  ```
